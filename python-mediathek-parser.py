@@ -20,8 +20,8 @@ class Serie:
     
   def getName(self):
     return self.name
-    
-    
+
+
 
 class Staffel:
   def __init__(self, path, name):
@@ -39,22 +39,74 @@ class Staffel:
     return self.name
 
 
-# Filme
-print("~Filme~")
-for film in os.listdir(filmePath):
-  if not (film.startswith(".")):
-    print(film)
-    
-print(" ")
-print(" ")
+with open("results.html", 'w') as html:
+  boilerplate = """<!DOCTYPE html>
+  <html lang="en">
+    <head>
+      <title>Mediaserver running on NGINX</title>
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    </head>
+    <body>
+      <div class="container fluid">
+        <div class="row">
+          <div class="col-md-12">
+            <h1>Mediaserver</h1>
+            <p><a href="http://mediaserver.local:32400/web/index.html" target="_self">Plex Media Server</a></p>
+          </div>
+        </div>
 
-# Serien
-print("~Serien~")
-for serie in os.listdir(serienPath):
-  if not (serie.startswith(".")):
-    serien.append(Serie(serienPath+"/"+serie, serie))
-    
-for serie in serien:
-  print(serie.getName())
-  for staffel in serie.getStaffeln():
-    print(" " + staffel.getName() + ": " + staffel.getEpisodenAnzahl() + " Episoden")
+        <div class="row">
+          <div class="col-md-12">
+            <h2>Filme</h2>
+            <p>"""
+            
+  afterMovies = """</p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12">
+            <h2>Serien</h2>
+            <p>"""
+            
+  afterSerien = """</p>
+          </div>
+        </div>
+      </div>
+    </body>
+  </html>"""
+
+  html.write(boilerplate)
+  
+
+
+
+
+
+
+
+  # Filme
+  for film in os.listdir(filmePath):
+    if not (film.startswith(".")):
+      html.write(film)
+      html.write("<br>")
+  html.write(afterMovies)
+  
+  # Serien
+  for serie in os.listdir(serienPath):
+    if not (serie.startswith(".")):
+      serien.append(Serie(serienPath+"/"+serie, serie))
+      
+  for serie in serien:
+    html.write("<b>")
+    html.write(serie.getName())
+    html.write("</b>")
+    html.write("<br>")
+
+    for staffel in serie.getStaffeln():
+      html.write(" " + staffel.getName() + ": " + staffel.getEpisodenAnzahl() + " Episoden")
+      html.write("<br>")
+    html.write("<br>")
+  
+  html.write(afterSerien)
