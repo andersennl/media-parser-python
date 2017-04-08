@@ -89,8 +89,12 @@ with open("results.html", 'w') as html:
   # Filme
   for film in os.listdir(filmePath):
     if not (film.startswith(".")):
-      html.write(film)
-      html.write("<br>")
+      filme.append(film)
+
+  for film in sorted(filme):
+    html.write(film)
+    html.write("<br>")
+
   html.write(afterMovies)
   
   # Serien
