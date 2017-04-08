@@ -1,9 +1,10 @@
 import os
 import yaml
 
-#config path
+#relative paths
 dir = os.path.dirname(__file__)
 config_file = os.path.join(dir, 'config.yml')
+results_html_path = os.path.join(dir, 'results.html')
 
 #load config
 with open(config_file, 'r') as ymlfile:
@@ -48,7 +49,7 @@ class Staffel:
     return self.name
 
 
-with open("results.html", 'w') as html:
+with open(results_html_path, 'w') as html:
   boilerplate = """<!DOCTYPE html>
   <html lang="en">
     <head>
