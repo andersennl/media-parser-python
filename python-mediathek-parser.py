@@ -1,8 +1,12 @@
 import os
 import yaml
 
-# load config
-with open("config.yml", 'r') as ymlfile:
+#config path
+dir = os.path.dirname(__file__)
+config_file = os.path.join(dir, 'config.yml')
+
+#load config
+with open(config_file, 'r') as ymlfile:
     config = yaml.load(ymlfile)
 
 serienPath = config["serien"]
