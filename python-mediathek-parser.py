@@ -1,7 +1,12 @@
 import os
+import yaml
 
-serienPath = "/Users/nandersen/Desktop/python test/Serien"
-filmePath = "/Users/nandersen/Desktop/python test/Filme"
+# load config
+with open("config.yml", 'r') as ymlfile:
+    config = yaml.load(ymlfile)
+
+serienPath = config["serien"]
+filmePath = config["filme"]
 
 serien = []
 filme = []
@@ -98,17 +103,21 @@ with open("results.html", 'w') as html:
   html.write(afterMovies)
   
   # Serien
+  serienTmp = []
   for serie in os.listdir(serienPath):
     if not (serie.startswith(".")):
-      serien.append(Serie(serienPath+"/"+serie, serie))
+      serienTmp.append(serie)
+
+  for serie in sorted(serienTmp):
+    serien.append(Serie(serienPath+"/"+serie, serie))
       
-  for serie in sorted(serien):
+  for serie in serien:
     html.write("<b>")
     html.write(serie.getName())
     html.write("</b>")
     html.write("<br>")
 
-    for staffel in sorted(serie.getStaffeln()):
+    for staffel in serie.getStaffeln():
       html.write(" " + staffel.getName() + ": " + staffel.getEpisodenAnzahl() + " Episoden")
       html.write("<br>")
     html.write("<br>")
