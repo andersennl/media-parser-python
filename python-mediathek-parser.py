@@ -102,13 +102,13 @@ with open("results.html", 'w') as html:
     if not (serie.startswith(".")):
       serien.append(Serie(serienPath+"/"+serie, serie))
       
-  for serie in serien:
+  for serie in sorted(serien):
     html.write("<b>")
     html.write(serie.getName())
     html.write("</b>")
     html.write("<br>")
 
-    for staffel in serie.getStaffeln():
+    for staffel in sorted(serie.getStaffeln()):
       html.write(" " + staffel.getName() + ": " + staffel.getEpisodenAnzahl() + " Episoden")
       html.write("<br>")
     html.write("<br>")
