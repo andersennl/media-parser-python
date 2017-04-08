@@ -3,10 +3,8 @@ import os
 serienPath = "/Users/nandersen/Desktop/python test/Serien"
 filmePath = "/Users/nandersen/Desktop/python test/Filme"
 
-storeFile = ".DS_Store"
 serien = []
 filme = []
-
 
 class Serie:
   def __init__(self, path, name):
@@ -16,7 +14,7 @@ class Serie:
   def getStaffeln(self):
     staffeln = []
     for staffel in os.listdir(self.path):
-        if (staffel != storeFile):
+        if not (staffel.startswith(".")):
           staffeln.append(Staffel(self.path+"/"+staffel, staffel))
     return staffeln
     
@@ -33,7 +31,7 @@ class Staffel:
   def getEpisodenAnzahl(self):
     count = 0
     for episode in os.listdir(self.path):
-      if (episode != storeFile):
+      if not (episode.startswith(".")):
         count+=1
     return "{anzahl}".format(anzahl = count)
 
@@ -44,7 +42,7 @@ class Staffel:
 # Filme
 print("~Filme~")
 for film in os.listdir(filmePath):
-  if (film != storeFile):
+  if not (film.startswith(".")):
     print(film)
     
 print(" ")
@@ -53,7 +51,7 @@ print(" ")
 # Serien
 print("~Serien~")
 for serie in os.listdir(serienPath):
-  if (serie != storeFile):
+  if not (serie.startswith(".")):
     serien.append(Serie(serienPath+"/"+serie, serie))
     
 for serie in serien:
