@@ -106,7 +106,7 @@ with open(results_html_path, 'w') as html:
       filme.append(film)
 
   for film in sorted(filme):
-    html.write(film)
+    html.write(film.replace(".mkv", ""))
     html.write("<br>")
 
   html.write(afterMovies)
