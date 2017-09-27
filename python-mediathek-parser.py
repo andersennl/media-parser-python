@@ -1,6 +1,8 @@
 import os
 import yaml
 
+print("Python Parser parsing")
+
 #relative paths
 dir = os.path.dirname(__file__)
 config_file = os.path.join(dir, 'config.yml')

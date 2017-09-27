@@ -1,6 +1,6 @@
 #!/bin/bash
-DIR="/media/Filmplatte"
-inotifywait -m -r -e modify,delete,create "$DIR" | while read f
+DIR="/media/Filmplatte/Serien"
+inotifywait -m -r -e delete,create "$DIR" | while read f
 
 do
     python /home/pi/mediaserver/media-parser/python-mediathek-parser.py
