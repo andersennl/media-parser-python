@@ -2,8 +2,6 @@ import os
 import yaml
 import datetime
 
-print("Python Parser parsing")
-
 #relative paths
 dir = os.path.dirname(__file__)
 config_file = os.path.join(dir, 'config.yml')
@@ -134,3 +132,5 @@ with open(results_html_path, 'w') as html:
     html.write("<br>")
   
   html.write(afterSerien)
+
+  print("Finished parsing")
