@@ -1,5 +1,6 @@
 import os
 import yaml
+import datetime
 
 print("Python Parser parsing")
 
@@ -7,6 +8,7 @@ print("Python Parser parsing")
 dir = os.path.dirname(__file__)
 config_file = os.path.join(dir, 'config.yml')
 results_html_path = os.path.join(dir, 'results.html')
+updated_at = datetime.datetime.now().strftime("%H:%M:%S Uhr, %d.%m.%Y")
 
 #load config
 with open(config_file, 'r') as ymlfile:
@@ -64,7 +66,9 @@ with open(results_html_path, 'w') as html:
         <div class="row">
           <div class="col-md-12">
             <h1>Mediaserver</h1>
-            <p><a href="http://mediaserver.local:32400/web/index.html" target="_self">Plex Media Server</a></p>
+            <p>Last updated at: """
+
+  afterBoilerplate = """</p><p><a href="http://mediaserver.local:32400/web/index.html" target="_self">Plex Media Server</a></p>
           </div>
         </div>
 
@@ -90,8 +94,8 @@ with open(results_html_path, 'w') as html:
   </html>"""
 
   html.write(boilerplate)
-  
-
+  html.write(updated_at)
+  html.write(afterBoilerplate)
 
 
 
