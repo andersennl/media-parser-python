@@ -15,8 +15,6 @@ with open(config_file, 'r') as ymlfile:
 series_path = config["series"]
 movies_path = config["movies"]
 
-serien = []
-movies = []
 
 class Series:
   def __init__(self, path, name):
@@ -50,6 +48,36 @@ class Staffel:
 
   def getName(self):
     return self.name
+
+
+class MoviePathParser:
+  def __init__(self, path):
+    self.path = path
+    self.movies = []
+  
+  def parse(self):
+    for movie in os.listdir(self.path):
+        if not (movie.startswith(".")):
+          self.movies.append(movie)
+    return self.movies
+
+
+
+class SeriesPathParser:
+  def __init__(self, path):
+    self.path = path
+
+  def parse(self):
+    series_tmp = []
+    for serie in os.listdir(self.path):
+      if not (serie.startswith(".")):
+        series_tmp.append(serie)
+
+    serien = []
+    for serie in sorted(series_tmp):
+      serien.append(Series(series_path+"/"+serie, serie))
+
+    return serien
 
 
 with open(html_destination_path, 'w') as html:
@@ -101,9 +129,7 @@ with open(html_destination_path, 'w') as html:
 
 
   # Movies
-  for movie in os.listdir(movies_path):
-    if not (movie.startswith(".")):
-      movies.append(movie)
+  movies = MoviePathParser(movies_path).parse()
 
   for movie in sorted(movies):
     html.write(movie.replace(".mkv", ""))
@@ -112,13 +138,7 @@ with open(html_destination_path, 'w') as html:
   html.write(html_after_movies)
   
   # Series
-  serienTmp = []
-  for serie in os.listdir(series_path):
-    if not (serie.startswith(".")):
-      serienTmp.append(serie)
-
-  for serie in sorted(serienTmp):
-    serien.append(Series(series_path+"/"+serie, serie))
+  serien = SeriesPathParser(series_path).parse()
       
   for serie in serien:
     html.write("<b>")
