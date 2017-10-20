@@ -12,8 +12,8 @@ updated_at = datetime.datetime.now().strftime("%H:%M:%S Uhr, %d.%m.%Y")
 with open(config_file, 'r') as ymlfile:
     config = yaml.load(ymlfile)
 
-series_path = config["serien"]
-movies_path = config["filme"]
+series_path = config["series"]
+movies_path = config["movies"]
 
 serien = []
 movies = []
