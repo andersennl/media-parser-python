@@ -36,7 +36,7 @@ with open(html_destination_path, 'w') as html:
 
         <div class="row">
           <div class="col-md-12">
-            <h2>Movies</h2>
+            <h2>Filme</h2>
             <p>"""
             
   html_after_movies = """</p>
@@ -45,7 +45,7 @@ with open(html_destination_path, 'w') as html:
 
         <div class="row">
           <div class="col-md-12">
-            <h2>Series</h2>
+            <h2>Serien</h2>
             <p>"""
             
   html_after_series = """</p>
