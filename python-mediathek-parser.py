@@ -1,91 +1,18 @@
 import os
-import yaml
+import time
 import datetime
+
+from models.series import Series
+from models.config_parser import ConfigParser
+from models.movie_path_parser import MoviePathParser
+from models.series_path_parser import SeriesPathParser
+
+time_start = time.time()
 
 #relative paths
 dir = os.path.dirname(__file__)
-config_file = os.path.join(dir, 'config.yml')
 html_destination_path = os.path.join(dir, 'results.html')
 updated_at = datetime.datetime.now().strftime("%H:%M:%S Uhr, %d.%m.%Y")
-
-#load config
-with open(config_file, 'r') as ymlfile:
-    config = yaml.load(ymlfile)
-
-series_path = config["series"]
-movies_path = config["movies"]
-
-
-class Movie:
-  def __init__(self, name):
-    self.name = name
-
-  def getName(self):
-    return self.name.replace(".mkv", "")
-
-
-class Series:
-  def __init__(self, path, name):
-    self.path = path
-    self.name = name
-    
-  def getStaffeln(self):
-    staffeln = []
-    for staffel in os.listdir(self.path):
-        if not (staffel.startswith(".")):
-          new_staffel = Staffel(self.path+"/"+staffel, staffel)
-          staffeln.append(new_staffel)
-    return staffeln
-    
-  def getName(self):
-    return self.name
-
-
-
-class Staffel:
-  def __init__(self, path, name):
-    self.path = path
-    self.name = name
-  
-  def getEpisodeCount(self):
-    count = 0
-    for episode in os.listdir(self.path):
-      if not (episode.startswith(".")):
-        count+=1
-    return str(count)
-
-  def getName(self):
-    return self.name
-
-
-class MoviePathParser:
-  def __init__(self, path):
-    self.path = path
-    self.movies = []
-  
-  def parse(self):
-    for movie in os.listdir(self.path):
-        if not (movie.startswith(".")):
-          self.movies.append(Movie(movie))
-    return sorted(self.movies, key=lambda x: x.getName())
-
-
-
-class SeriesPathParser:
-  def __init__(self, path):
-    self.path = path
-
-  def parse(self):
-    series_tmp = []
-    for serie in os.listdir(self.path):
-      if not (serie.startswith(".")):
-        series_tmp.append(serie)
-
-    serien = []
-    for serie in sorted(series_tmp):
-      serien.append(Series(series_path+"/"+serie, serie))
-
-    return serien
 
 
 with open(html_destination_path, 'w') as html:
@@ -137,7 +64,8 @@ with open(html_destination_path, 'w') as html:
 
 
   # Movies
-  movies = MoviePathParser(movies_path).parse()
+  parser = ConfigParser()
+  movies = MoviePathParser(parser.movies_path()).parse()
 
   for movie in movies:
     html.write(movie.getName())
@@ -146,7 +74,7 @@ with open(html_destination_path, 'w') as html:
   html.write(html_after_movies)
   
   # Series
-  serien = SeriesPathParser(series_path).parse()
+  serien = SeriesPathParser(parser.series_path()).parse()
       
   for serie in serien:
     html.write("<b>")
@@ -159,6 +87,14 @@ with open(html_destination_path, 'w') as html:
       html.write("<br>")
     html.write("<br>")
   
+  html.write("<br>")
+  html.write("<b>")
+
+  parsing_time = time.time() - time_start
+  html.write("Finished parsing in %.3f seconds" % (parsing_time))
+
+  html.write("</b>")
+
   html.write(html_after_series)
 
-  print("Finished parsing")
+  print("Finished parsing in %.3f seconds" % (parsing_time))

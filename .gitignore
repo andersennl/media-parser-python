@@ -1,2 +1,4 @@
 results.html
 ._python-mediathek-parser.py
+*.pyc
+._*
