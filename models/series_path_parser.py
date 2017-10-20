@@ -11,8 +11,8 @@ class SeriesPathParser:
       if not (serie.startswith(".")):
         series_tmp.append(serie)
 
-    serien = []
+    series = []
     for serie in sorted(series_tmp):
-      serien.append(Series(self.path+"/"+serie, serie))
+      series.append(Series(self.path+"/"+serie, serie))
 
-    return serien
+    return series
