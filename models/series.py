@@ -12,7 +12,7 @@ class Series:
         if not (staffel.startswith(".")):
           new_staffel = Season(self.path+"/"+staffel, staffel)
           staffeln.append(new_staffel)
-    return staffeln
+    return sorted(staffeln, key=lambda x: x.getName())
     
   def getName(self):
     return self.name
