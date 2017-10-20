@@ -8,52 +8,54 @@ from models.movie_path_parser import MoviePathParser
 from models.series_path_parser import SeriesPathParser
 
 time_start = time.time()
-
-#relative paths
-dir = os.path.dirname(__file__)
-html_destination_path = os.path.join(dir, 'results.html')
 updated_at = datetime.datetime.now().strftime("%H:%M:%S Uhr, %d.%m.%Y")
 
+dir = os.path.dirname(__file__)
+html_destination_path = os.path.join(dir, 'results.html')
 
 with open(html_destination_path, 'w') as html:
-  html_start = """<!DOCTYPE html>
-  <html lang="en">
-    <head>
-      <title>Mediaserver running on NGINX</title>
-      <meta name="viewport" content="width=device-width, initial-scale=1">
-      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" crossorigin="anonymous">
-    </head>
-    <body>
-      <div class="container fluid">
-        <div class="row">
-          <div class="col-md-12">
-            <h1>Mediaserver</h1>
-            <p>Last updated at: """
+  html_start = """
+    <!DOCTYPE html>
+    <html lang="en">
+      <head>
+        <title>Mediaserver running on NGINX</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" crossorigin="anonymous">
+      </head>
+      <body>
+        <div class="container fluid">
+          <div class="row">
+            <div class="col-md-12">
+              <h1>Mediaserver</h1>
+              <p>Last updated at: """
 
-  html_middle = """</p><p><a href="http://mediaserver.local:32400/web/index.html" target="_self">Plex Media Server</a></p>
+  html_middle = """
+              </p><p><a href="http://mediaserver.local:32400/web/index.html" target="_self">Plex Media Server</a></p>
+            </div>
           </div>
-        </div>
 
-        <div class="row">
-          <div class="col-md-12">
-            <h2>Filme</h2>
-            <p>"""
+          <div class="row">
+            <div class="col-md-12">
+              <h2>Filme</h2>
+              <p>"""
             
-  html_after_movies = """</p>
+  html_after_movies = """
+              </p>
+            </div>
           </div>
-        </div>
 
-        <div class="row">
-          <div class="col-md-12">
-            <h2>Serien</h2>
-            <p>"""
+          <div class="row">
+            <div class="col-md-12">
+              <h2>Serien</h2>
+              <p>"""
             
-  html_after_series = """</p>
+  html_after_series = """
+              </p>
+            </div>
           </div>
         </div>
-      </div>
-    </body>
-  </html>"""
+      </body>
+    </html>"""
 
 
 

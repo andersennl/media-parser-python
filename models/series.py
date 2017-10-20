@@ -5,6 +5,9 @@ class Series:
   def __init__(self, path, name):
     self.path = path
     self.name = name
+
+  def getName(self):
+    return self.name
     
   def getStaffeln(self):
     staffeln = []
@@ -13,6 +16,3 @@ class Series:
           new_staffel = Season(self.path+"/"+staffel, staffel)
           staffeln.append(new_staffel)
     return sorted(staffeln, key=lambda x: x.getName())
-    
-  def getName(self):
-    return self.name
