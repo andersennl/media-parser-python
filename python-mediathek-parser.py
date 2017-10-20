@@ -16,6 +16,14 @@ series_path = config["series"]
 movies_path = config["movies"]
 
 
+class Movie:
+  def __init__(self, name):
+    self.name = name
+
+  def getName(self):
+    return self.name.replace(".mkv", "")
+
+
 class Series:
   def __init__(self, path, name):
     self.path = path
@@ -39,7 +47,7 @@ class Staffel:
     self.path = path
     self.name = name
   
-  def getEpisodenAnzahl(self):
+  def getEpisodeCount(self):
     count = 0
     for episode in os.listdir(self.path):
       if not (episode.startswith(".")):
@@ -58,8 +66,8 @@ class MoviePathParser:
   def parse(self):
     for movie in os.listdir(self.path):
         if not (movie.startswith(".")):
-          self.movies.append(movie)
-    return self.movies
+          self.movies.append(Movie(movie))
+    return sorted(self.movies, key=lambda x: x.getName())
 
 
 
@@ -131,8 +139,8 @@ with open(html_destination_path, 'w') as html:
   # Movies
   movies = MoviePathParser(movies_path).parse()
 
-  for movie in sorted(movies):
-    html.write(movie.replace(".mkv", ""))
+  for movie in movies:
+    html.write(movie.getName())
     html.write("<br>")
 
   html.write(html_after_movies)
@@ -147,7 +155,7 @@ with open(html_destination_path, 'w') as html:
     html.write("<br>")
 
     for staffel in serie.getStaffeln():
-      html.write(" " + staffel.getName() + ": " + staffel.getEpisodenAnzahl() + " Episoden")
+      html.write(" " + staffel.getName() + ": " + staffel.getEpisodeCount() + " Episoden")
       html.write("<br>")
     html.write("<br>")
   
