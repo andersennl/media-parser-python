@@ -5,20 +5,20 @@ import datetime
 #relative paths
 dir = os.path.dirname(__file__)
 config_file = os.path.join(dir, 'config.yml')
-results_html_path = os.path.join(dir, 'results.html')
+html_destination_path = os.path.join(dir, 'results.html')
 updated_at = datetime.datetime.now().strftime("%H:%M:%S Uhr, %d.%m.%Y")
 
 #load config
 with open(config_file, 'r') as ymlfile:
     config = yaml.load(ymlfile)
 
-serienPath = config["serien"]
-filmePath = config["filme"]
+series_path = config["serien"]
+movies_path = config["filme"]
 
 serien = []
-filme = []
+movies = []
 
-class Serie:
+class Series:
   def __init__(self, path, name):
     self.path = path
     self.name = name
@@ -27,7 +27,8 @@ class Serie:
     staffeln = []
     for staffel in os.listdir(self.path):
         if not (staffel.startswith(".")):
-          staffeln.append(Staffel(self.path+"/"+staffel, staffel))
+          new_staffel = Staffel(self.path+"/"+staffel, staffel)
+          staffeln.append(new_staffel)
     return staffeln
     
   def getName(self):
@@ -45,14 +46,14 @@ class Staffel:
     for episode in os.listdir(self.path):
       if not (episode.startswith(".")):
         count+=1
-    return "{anzahl}".format(anzahl = count)
+    return str(count)
 
   def getName(self):
     return self.name
 
 
-with open(results_html_path, 'w') as html:
-  boilerplate = """<!DOCTYPE html>
+with open(html_destination_path, 'w') as html:
+  html_start = """<!DOCTYPE html>
   <html lang="en">
     <head>
       <title>Mediaserver running on NGINX</title>
@@ -66,59 +67,58 @@ with open(results_html_path, 'w') as html:
             <h1>Mediaserver</h1>
             <p>Last updated at: """
 
-  afterBoilerplate = """</p><p><a href="http://mediaserver.local:32400/web/index.html" target="_self">Plex Media Server</a></p>
+  html_middle = """</p><p><a href="http://mediaserver.local:32400/web/index.html" target="_self">Plex Media Server</a></p>
           </div>
         </div>
 
         <div class="row">
           <div class="col-md-12">
-            <h2>Filme</h2>
+            <h2>Movies</h2>
             <p>"""
             
-  afterMovies = """</p>
+  html_after_movies = """</p>
           </div>
         </div>
 
         <div class="row">
           <div class="col-md-12">
-            <h2>Serien</h2>
+            <h2>Series</h2>
             <p>"""
             
-  afterSerien = """</p>
+  html_after_series = """</p>
           </div>
         </div>
       </div>
     </body>
   </html>"""
 
-  html.write(boilerplate)
+
+
+  html.write(html_start)
   html.write(updated_at)
-  html.write(afterBoilerplate)
+  html.write(html_middle)
 
 
 
+  # Movies
+  for movie in os.listdir(movies_path):
+    if not (movie.startswith(".")):
+      movies.append(movie)
 
-
-
-  # Filme
-  for film in os.listdir(filmePath):
-    if not (film.startswith(".")):
-      filme.append(film)
-
-  for film in sorted(filme):
-    html.write(film.replace(".mkv", ""))
+  for movie in sorted(movies):
+    html.write(movie.replace(".mkv", ""))
     html.write("<br>")
 
-  html.write(afterMovies)
+  html.write(html_after_movies)
   
-  # Serien
+  # Series
   serienTmp = []
-  for serie in os.listdir(serienPath):
+  for serie in os.listdir(series_path):
     if not (serie.startswith(".")):
       serienTmp.append(serie)
 
   for serie in sorted(serienTmp):
-    serien.append(Serie(serienPath+"/"+serie, serie))
+    serien.append(Series(series_path+"/"+serie, serie))
       
   for serie in serien:
     html.write("<b>")
@@ -131,6 +131,6 @@ with open(results_html_path, 'w') as html:
       html.write("<br>")
     html.write("<br>")
   
-  html.write(afterSerien)
+  html.write(html_after_series)
 
   print("Finished parsing")
